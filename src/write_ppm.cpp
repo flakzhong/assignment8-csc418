@@ -12,6 +12,27 @@ bool write_ppm(
 {
   ////////////////////////////////////////////////////////////////////////////
   // Replace with your code here:
-  return false;
+  std::ofstream output;
+  output.open(filename.c_str(), std::ofstream::binary);
+
+  // path is invalid
+  if (!output.good()) {
+    return false;
+  }
+
+  // write header
+  if (num_channels == 1) {
+    output << "P5 " << width << " " << height  << " 255\n";
+  } else {
+    output << "P6 " << width << " " << height  << " 255\n";
+  }
+
+
+  for (int i = 0; i < width*height*num_channels; i++) {
+    output << data[i];
+  }
+
+  output.close();
+  return true;
   ////////////////////////////////////////////////////////////////////////////
 }

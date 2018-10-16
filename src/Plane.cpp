@@ -6,7 +6,16 @@ bool Plane::intersect(
 {
   ////////////////////////////////////////////////////////////////////////////
   // Replace with your code here:
-  return false;
+  Eigen::Vector3d d = ray.direction;
+  Eigen::Vector3d e = ray.origin;
+  double temp_t = ((point - e).dot(normal))/d.dot(normal);
+  if (temp_t < min_t) {
+    return false;
+  } else {
+    t = temp_t;
+    n = normal;
+    return true;
+  }
   ////////////////////////////////////////////////////////////////////////////
 }
 
