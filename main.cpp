@@ -5,16 +5,12 @@
 #include "write_ppm.h"
 #include "viewing_ray.h"
 #include "raycolor.h"
-#include "set_color.h"
 #include <Eigen/Core>
 #include <vector>
 #include <iostream>
 #include <memory>
 #include <limits>
 #include <functional>
-#include <pthread.h>
-
-#define NUM_THREADS 8
 
 
 int main(int argc, char * argv[])
@@ -38,27 +34,31 @@ int main(int argc, char * argv[])
      3.0/4.0,  1.0/3.0,
     -3.0/4.0, -1.0/4.0,
      1.0/4.0, -3.0/4.0,
-};
+  };
 
   // For each pixel (i,j)
   for(unsigned i=0; i<height; ++i) 
   {
     for(unsigned j=0; j<width; ++j)
     {
-      rgb_image[0+3*(j+width*i)] = 0;
-      rgb_image[1+3*(j+width*i)] = 0;
-      rgb_image[2+3*(j+width*i)] = 0;
+      Eigen::Vector3d rgb(0,0,0);
       for (int sample = 0; sample < 4; sample++) {
-        // Set background color
-        auto clamp = [](double s){ return std::max(std::min(s,1.0),0.0);};
-        Eigen::Vector3d rgb = set_color(camera, i, j, width, height, objects, lights);
-        rgb_image[0+3*(j+width*i)] += 255.0*clamp(rgb(0));
-        rgb_image[1+3*(j+width*i)] += 255.0*clamp(rgb(1));
-        rgb_image[2+3*(j+width*i)] += 255.0*clamp(rgb(2));
+        Eigen::Vector3d temp(0, 0, 0);
+        // Compute viewing ray
+        Ray ray;
+        viewing_ray(camera,i + jitterMatrix[2*sample],j + jitterMatrix[2*sample+1],width,height,ray);
+        
+        // Shoot ray and collect color
+        raycolor(ray,1.0,objects,lights,0,temp);
+        rgb += temp;
       }
-      rgb_image[0+3*(j+width*i)] /= 4.0;
-      rgb_image[1+3*(j+width*i)] /= 4.0;
-      rgb_image[2+3*(j+width*i)] /= 4.0;
+
+      rgb /= 4.0;
+      auto clamp = [](double s){ return std::max(std::min(s,1.0),0.0);};
+      rgb_image[0+3*(j+width*i)] = 255.0*clamp(rgb(0));
+      rgb_image[1+3*(j+width*i)] = 255.0*clamp(rgb(1));
+      rgb_image[2+3*(j+width*i)] = 255.0*clamp(rgb(2));
+
     }
   }
 
