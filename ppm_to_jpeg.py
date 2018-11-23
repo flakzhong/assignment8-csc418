@@ -1,4 +1,10 @@
 import cv2
+import sys
 
-img = cv2.imread("build/rgb.ppm")
-cv2.imwrite("build/rgb.jpg", img)
+mode = ""
+if len(sys.argv) == 2:
+    mode = str(sys.argv[1])
+
+path = "build" + mode
+img = cv2.imread(path + "/rgb.ppm")
+cv2.imwrite(path + "/rgb.jpg", img)
