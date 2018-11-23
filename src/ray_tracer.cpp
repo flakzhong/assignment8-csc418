@@ -55,15 +55,15 @@ void *ray_tracer(void *thread_args) {
 
 //     struct args_struct *curr_args;
 //     curr_args = (struct args_struct *) thread_args;
-//     height = curr_args->height;
-//     width = curr_args->width;
-//     rgb_image = curr_args->rgb_image;
-//     objects = curr_args->objects;
-//     lights = curr_args->lights;
-//     camera = curr_args->camera;
+//     height = curr_args->shared_params->height;
+//     width = curr_args->shared_params->width;
+//     rgb_image = curr_args->shared_params->rgb_image;
+//     objects = curr_args->shared_params->objects;
+//     lights = curr_args->shared_params->lights;
+//     camera = curr_args->shared_params->camera;
+//     int num_threads = curr_args->shared_params->num_threads;
 //     thread_id = curr_args->id;
 
-//     int num_threads = curr_args->num_threads;
 //     if (thread_id == 0) {
 //         start = 0;
 //     } else {
