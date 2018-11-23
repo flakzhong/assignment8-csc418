@@ -14,4 +14,5 @@ struct args_struct {
     std::vector<unsigned char> *rgb_image;
     std::vector< std::shared_ptr<Object> > objects;
     int id;
+    int num_threads;
   };
