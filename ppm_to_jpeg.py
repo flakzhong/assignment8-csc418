@@ -1,4 +1,4 @@
-from PIL import Image
+import cv2
 
-im = Image.open("build/rgb.ppm")
-im.save("build/rgb.jpg")
+img = cv2.imread("build/rgb.ppm")
+cv2.imwrite("build/rgb.jpg", img)
