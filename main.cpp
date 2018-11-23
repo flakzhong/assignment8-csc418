@@ -8,7 +8,6 @@
 #include "write_ppm.h"
 #include "viewing_ray.h"
 #include "raycolor.h"
-#include "ray_tracer.h"
 #include "pthread_args_struct.h"
 #include <Eigen/Core>
 #include <vector>
@@ -23,7 +22,7 @@ void *ray_tracer(void *);
 
 void *ray_tracer(void *thread_args) {
     int height, width, thread_id, start;
-    std::vector<unsigned char> rgb_image;
+    std::vector<unsigned char> *rgb_image;
     std::vector< std::shared_ptr<Object> > objects;
     Camera camera;
     std::vector< std::shared_ptr<Light> > lights;
@@ -36,14 +35,17 @@ void *ray_tracer(void *thread_args) {
     rgb_image = curr_args->rgb_image;
     objects = curr_args->objects;
     lights = curr_args->lights;
+    camera = curr_args->camera;
+    thread_id = curr_args->id;
 
 
-    if (pthread_self() == 1) {
+    if (thread_id == 0) {
         start = 0;
     } else {
         start = thread_id*height/8;
     }
     int stop = (thread_id + 1)*(height/8);
+
     // For each pixel (i,j)
     for(unsigned i = start; i < stop; ++i) {
         for(unsigned j=0; j<width; ++j) {
@@ -54,11 +56,13 @@ void *ray_tracer(void *thread_args) {
         // Shoot ray and collect color
         raycolor(ray,1.0,objects,lights,0,rgb);
         auto clamp = [](double s){ return std::max(std::min(s,1.0),0.0);};
-        rgb_image[0+3*(j+width*i)] = 255.0*clamp(rgb(0));
-        rgb_image[1+3*(j+width*i)] = 255.0*clamp(rgb(1));
-        rgb_image[2+3*(j+width*i)] = 255.0*clamp(rgb(2));
-        }
-  }
+        (*rgb_image)[0+3*(j+width*i)] = 255.0*clamp(rgb(0));
+        (*rgb_image)[1+3*(j+width*i)] = 255.0*clamp(rgb(1));
+        (*rgb_image)[2+3*(j+width*i)] = 255.0*clamp(rgb(2));
+        
+      }
+    }
+    // std::cout << "thread:" << thread_id  << "finished its iteration" << "\n";
 }
 
 int main(int argc, char * argv[])
@@ -86,16 +90,20 @@ int main(int argc, char * argv[])
   for (int k = 0; k < num_threads; k++) {
     args[k].height = height;
     args[k].width = width;
-    args[k].rgb_image = rgb_image;
-    std::vector< std::shared_ptr<Object> > objects;
+    args[k].rgb_image = &rgb_image;
+    args[k].objects = objects;
+    args[k].lights = lights;
+    args[k].camera = camera;
+    args[k].id = k;
     pthread_create(&threads[k], NULL, ray_tracer, (void *) &args[k]);
   }
 
   for (int k = 0; k < 8; k++)
         pthread_join(threads[k], NULL);
-  
-  pthread_exit(NULL);
 
+  int i = 180, j = 320;
+  std::cout << rgb_image[0+3*(j+width*i)] << " " << rgb_image[1+3*(j+width*i)]
+    << " " << rgb_image[2+3*(j+width*i)] << "\n";
 
   write_ppm("rgb.ppm",rgb_image,width,height,3);
   return 0;
