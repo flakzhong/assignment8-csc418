@@ -6,13 +6,18 @@
 #include "viewing_ray.h"
 #include "raycolor.h"
 
+struct shared_params {
+  int height;
+  int width;
+  Camera camera;
+  std::vector< std::shared_ptr<Light> > lights;
+  std::vector<unsigned char> *rgb_image;
+  std::vector< std::shared_ptr<Object> > objects;
+  int num_threads;
+};
+
 struct args_struct {
-    int height;
-    int width;
-    Camera camera;
-    std::vector< std::shared_ptr<Light> > lights;
-    std::vector<unsigned char> *rgb_image;
-    std::vector< std::shared_ptr<Object> > objects;
     int id;
-    int num_threads;
+    struct shared_params *shared_params;
   };
+  
