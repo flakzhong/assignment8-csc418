@@ -75,6 +75,7 @@ inline bool read_json(
     camera.u = camera.v.cross(camera.w);
     camera.height = j["height"].get<double>();
     camera.width = j["width"].get<double>();
+    camera.fstops = j["fstops"].get<double>();
   };
   parse_camera(j["camera"],camera);
 

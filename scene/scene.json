@@ -2,13 +2,12 @@
   "camera": {
     "type": "perspective",
     "focal_length": 0.35,
-    "eye": [0,-2,0],
-    "r_eye": [-1,-0.18,0.5],
-    "l_eye": [1,-0.18,0.5],
+    "eye": [0,-4,1],
     "up": [0,0,0.1],
-    "look": [0,1,0],
+    "look": [0,1,-0.4],
     "height": 1,
-    "width": 1.7777777778
+    "width": 1.7777777778,
+    "fstops": 14
   },
 
   "materials": [
@@ -64,23 +63,35 @@
   "lights":[
     {
       "type": "point",
-      "position": [0,-3,0],
+      "position": [0,-5,4],
       "color": [1,1,1]
     }
   ],
 
   "objects": [
     {
-      "type": "soup",
+      "type": "plane",
       "material": "Lambertian gray",
-      "stl": "astro_r.stl",
-      "point": [-0.437,0,0.5]
+      "point": [0,0,-3],
+      "normal": [0,0,1]
     },
     {
-      "type": "soup",
+      "type": "sphere",
       "material": "black mirror",
-      "stl": "face.stl",
-      "point": [-0.437,0,0.5]
+      "radius": 1,
+      "center": [0,0,0]
+    },
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [5,5,0]
+    },
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [15,15,0]
     }
   ]
 }

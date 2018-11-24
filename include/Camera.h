@@ -14,6 +14,7 @@ struct Camera
   double d;
   // width and height of image plane
   double width, height;
+  double fstops;
 };
 
 #endif
