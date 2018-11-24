@@ -61,10 +61,10 @@
 
   "objects": [
     {
-      "type": "sphere",
+      "type": "soup",
       "material": "red metal",
-      "radius": 1,
-      "center": [0,5,0]
+      "stl": "astro.stl",
+      "point": [0,5,0]
     }
   ]
 }
