@@ -3,6 +3,8 @@
     "type": "perspective",
     "focal_length": 0.35,
     "eye": [0,-2,0],
+    "r_eye": [-1,-0.18,0.5],
+    "l_eye": [1,-0.18,0.5],
     "up": [0,0,0.1],
     "look": [0,1,0],
     "height": 1,
@@ -17,6 +19,14 @@
       "ks": [0.1,0.1,0.1],
       "km": [0.1,0.1,0.1],
       "phong_exponent": 20
+    },
+    {
+      "name": "black mirror",
+      "ka": [0.02,0.02,0.02],
+      "kd": [0.1,0.1,0.1],
+      "ks": [0.5,0.5,0.5],
+      "km": [0.2,0.2,0.2],
+      "phong_exponent": 200
     },
     {
       "name": "red metal",
@@ -54,19 +64,23 @@
   "lights":[
     {
       "type": "point",
-      "position": [0.3,0,15],
-      "color": [0,-3,0]
+      "position": [0,-3,0],
+      "color": [1,1,1]
     }
   ],
 
   "objects": [
     {
       "type": "soup",
-      "material": "red metal",
-      "stl": "astro.stl",
-      "point": [0,5,0]
+      "material": "Lambertian gray",
+      "stl": "astro_r.stl",
+      "point": [-0.437,0,0.5]
+    },
+    {
+      "type": "sphere",
+      "material": "black mirror",
+      "radius": 0.14,
+      "center": [0,-0.16,0.54]
     }
   ]
 }
-
-
