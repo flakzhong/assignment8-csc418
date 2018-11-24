@@ -77,10 +77,10 @@
       "point": [-0.437,0,0.5]
     },
     {
-      "type": "sphere",
+      "type": "soup",
       "material": "black mirror",
-      "radius": 0.14,
-      "center": [0,-0.16,0.54]
+      "stl": "face.stl",
+      "point": [-0.437,0,0.5]
     }
   ]
 }
