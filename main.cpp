@@ -58,6 +58,5 @@ int main(int argc, char * argv[])
         pthread_join(threads[k], NULL);
 
   write_ppm("rgb.ppm",rgb_image,width,height,3);
-  system("convert rgb.ppm rgb.png");
-  return 0;
+  return system("convert rgb.ppm rgb.png");
 }

@@ -168,14 +168,24 @@ inline bool read_json(
               stl_path,
               V,F,N);
         }
+
+        Eigen::Vector3d translation(V[0][0], V[0][1], V[0][2]);
+        try {
+          translation = parse_Vector3d(jobj["point"]) - translation;
+        } catch (const std::exception& e) {
+          translation[0] = 0;
+          translation[1] = 0;
+          translation[2] = 0;
+        }
+        
         std::shared_ptr<TriangleSoup> soup(new TriangleSoup());
         for(int f = 0;f<F.size();f++)
         {
           std::shared_ptr<Triangle> tri(new Triangle());
           tri->corners = std::make_tuple(
-            Eigen::Vector3d( V[F[f][0]][0], V[F[f][0]][1], V[F[f][0]][2]),
-            Eigen::Vector3d( V[F[f][1]][0], V[F[f][1]][1], V[F[f][1]][2]),
-            Eigen::Vector3d( V[F[f][2]][0], V[F[f][2]][1], V[F[f][2]][2])
+            Eigen::Vector3d( V[F[f][0]][0] + translation[0], V[F[f][0]][1] + translation[1], V[F[f][0]][2] + translation[2]),
+            Eigen::Vector3d( V[F[f][1]][0] + translation[0], V[F[f][1]][1] + translation[1], V[F[f][1]][2] + translation[2]),
+            Eigen::Vector3d( V[F[f][2]][0] + translation[0], V[F[f][2]][1] + translation[1], V[F[f][2]][2] + translation[2])
           );
           soup->triangles.push_back(tri);
         }
