@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(raytracing)
 
 # Prepare the build environment
-set(SHARED_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/shared/")
+set(EXTERNAL_LIB "${CMAKE_CURRENT_SOURCE_DIR}/external/")
 include_directories(${LIBIGL_INCLUDE_DIRS})
 add_definitions(${LIBIGL_DEFINITIONS})
 option(USE_SOLUTION "Use solution"  OFF)
@@ -34,6 +34,6 @@ else()
 endif()
 
 add_executable(${PROJECT_NAME} ${SRCFILES} ${LIBIGL_EXTRA_SOURCES})
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${SHARED_ROOT}/eigen ${SHARED_ROOT}/json)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${EXTERNAL_LIB}/eigen ${EXTERNAL_LIB}/json)
 target_link_libraries(${PROJECT_NAME} ${LIBIGL_LIBRARIES} ${LIBIGL_EXTRA_LIBRARIES})
 
