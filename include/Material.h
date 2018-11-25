@@ -9,5 +9,6 @@ struct Material
   Eigen::Vector3d ka,kd,ks,km;
   // Phong exponent
   double phong_exponent;
+  float transparency;
 };
 #endif

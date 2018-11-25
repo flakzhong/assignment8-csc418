@@ -95,6 +95,7 @@ inline bool read_json(
       material->ks = parse_Vector3d(jmat["ks"]);
       material->km = parse_Vector3d(jmat["km"]);
       material->phong_exponent = jmat["phong_exponent"];
+      material->transparency = (float)jmat["transparency"].get<double>();
       materials[name] = material;
     }
   };

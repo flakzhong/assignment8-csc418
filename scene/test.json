@@ -2,11 +2,12 @@
   "camera": {
     "type": "perspective",
     "focal_length": 0.35,
-    "eye": [0,-2,0],
+    "eye": [0,-4,0],
     "up": [0,0,0.1],
-    "look": [0,1,0],
+    "look": [0,1,-0.4],
     "height": 1,
-    "width": 1.7777777778
+    "width": 1.7777777778,
+    "fstops": 2
   },
 
   "materials": [
@@ -16,7 +17,17 @@
       "kd": [0.8, 0.8, 0.8],
       "ks": [0.1,0.1,0.1],
       "km": [0.1,0.1,0.1],
+      "transparency": 0,
       "phong_exponent": 20
+    },
+    {
+      "name": "black mirror",
+      "ka": [0.02,0.02,0.02],
+      "kd": [0.1,0.1,0.1],
+      "ks": [0.5,0.5,0.5],
+      "km": [0.5,0.5,0.5],
+      "transparency": 1,
+      "phong_exponent": 200
     },
     {
       "name": "red metal",
@@ -24,6 +35,7 @@
       "kd": [0.894118,0.101961,0.109804],
       "ks": [0.894118,0.101961,0.109804],
       "km": [0.894118,0.101961,0.109804],
+      "transparency": 0.0,
       "phong_exponent": 2000
     },
     {
@@ -32,6 +44,7 @@
       "kd": [0.215686,0.494118,0.721569],
       "ks": [0.215686,0.494118,0.721569],
       "km": [0.215686,0.494118,0.721569],
+      "transparency": 0,
       "phong_exponent": 2000
     },
     {
@@ -40,6 +53,7 @@
       "kd": [0.301961,0.686275,0.290196],
       "ks": [0.301961,0.686275,0.290196],
       "km": [0.301961,0.686275,0.290196],
+      "transparency": 0,
       "phong_exponent": 2000
     },
     {
@@ -48,23 +62,48 @@
       "kd": [0.596078,0.305882,0.639216],
       "ks": [0.596078,0.305882,0.639216],
       "km": [0.596078,0.305882,0.639216],
+      "transparency": 0,
       "phong_exponent": 2000
     }
   ],
   "lights":[
     {
       "type": "point",
-      "position": [0,-3,0],
+      "position": [0,-5,4],
       "color": [1,1,1]
     }
   ],
 
   "objects": [
     {
+      "type": "plane",
+      "material": "green metal",
+      "point": [0,0,-3],
+      "normal": [0,0,1]
+    },
+    {
       "type": "sphere",
-      "material": "red metal",
+      "material": "black mirror",
       "radius": 1,
-      "center": [0,5,0]
+      "center": [0,-1,0]
+    },
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [0,2,0]
+    },
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [2,2,0]
+    },
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [-2,2,0]
     }
   ]
 }

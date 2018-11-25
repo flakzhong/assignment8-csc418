@@ -2,6 +2,9 @@
 #include "first_hit.h"
 #include "blinn_phong_shading.h"
 #include "reflect.h"
+#include "refract.h"
+#include <iostream>
+
 
 bool raycolor(
   const Ray & ray, 
@@ -27,6 +30,18 @@ bool raycolor(
     if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001 
       && raycolor(q, 0.00001, objects, lights, num_recursive_calls + 1, r_color)) {
       rgb += (r_color.array()*objects[hit_id]->material->km.array()).matrix();
+    }
+
+    float transparency = objects[hit_id]->material->transparency;
+    if (transparency) {
+      Eigen::Vector3d refract_rgb(0, 0, 0);
+      Ray refract_ray;
+      refract_ray.origin = q.origin + 0.0001*n;
+      refract_ray.direction = refract(q.origin, n, 1.0, 1.5);
+      if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001
+        && raycolor(refract_ray, 0.00001, objects, lights, num_recursive_calls + 1, refract_rgb)) {
+          rgb += refract_rgb;
+      }
     }
     return true;
   }

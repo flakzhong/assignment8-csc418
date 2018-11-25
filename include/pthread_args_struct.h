@@ -19,5 +19,5 @@ struct shared_params {
 struct args_struct {
     int id;
     struct shared_params *shared_params;
-  };
+};
   
