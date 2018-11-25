@@ -20,18 +20,6 @@ bool raycolor(
   double t;
   Eigen::Vector3d n;
   if (first_hit(ray, min_t, objects, hit_id, t, n)) {
-    Ray q;
-    q.origin = ray.origin + t*ray.direction;
-    q.direction = reflect(ray.direction, n);
-    Eigen::Vector3d r_color;
-    
-    rgb = objects[hit_id]->material->ka;
-    rgb += blinn_phong_shading(ray, hit_id, t, n, objects, lights);
-    if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001 
-      && raycolor(q, 0.00001, objects, lights, num_recursive_calls + 1, r_color)) {
-      rgb += (r_color.array()*objects[hit_id]->material->km.array()).matrix();
-    }
-
     float transparency = objects[hit_id]->material->transparency;
     if (transparency) {
       Eigen::Vector3d refract_rgb(0, 0, 0);
@@ -40,7 +28,19 @@ bool raycolor(
       refract_ray.direction = refract(q.origin, n, 1.0, 1.5);
       if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001
         && raycolor(refract_ray, 0.00001, objects, lights, num_recursive_calls + 1, refract_rgb)) {
-          rgb += refract_rgb;
+          rgb = refract_rgb;
+      }
+    } else {
+      Ray q;
+      q.origin = ray.origin + t*ray.direction;
+      q.direction = reflect(ray.direction, n);
+      Eigen::Vector3d r_color;
+      
+      rgb = objects[hit_id]->material->ka;
+      rgb += blinn_phong_shading(ray, hit_id, t, n, objects, lights);
+      if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001 
+        && raycolor(q, 0.00001, objects, lights, num_recursive_calls + 1, r_color)) {
+        rgb += (r_color.array()*objects[hit_id]->material->km.array()).matrix();
       }
     }
     return true;

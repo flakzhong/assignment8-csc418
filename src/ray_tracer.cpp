@@ -47,7 +47,8 @@ void *ray_tracer(void *thread_args) {
         std::uniform_real_distribution<> distr(-0.001, 0.001); // define the range
 
         Eigen::Vector3d rgb(0,0,0);
-        for (int k = 0; k < 100; k++) {
+        int monte_carlo_dof = 1;
+        for (int k = 0; k < monte_carlo_dof; k++) {
             for(int l = 0; l < 3; l++) {
                 float rnd = distr(eng)*aperture;
                 ray.origin[l] += rnd;
@@ -59,7 +60,7 @@ void *ray_tracer(void *thread_args) {
             raycolor(ray,1.0,objects,lights,0,temp);
             rgb += temp;
         }
-        rgb /= 100;
+        rgb /= monte_carlo_dof;
         auto clamp = [](double s){ return std::max(std::min(s,1.0),0.0);};
         (*rgb_image)[0+3*(j+width*i)] = 255.0*clamp(rgb(0));
         (*rgb_image)[1+3*(j+width*i)] = 255.0*clamp(rgb(1));
