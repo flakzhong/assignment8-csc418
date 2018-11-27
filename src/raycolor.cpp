@@ -24,8 +24,9 @@ bool raycolor(
     if (transparency) {
       Eigen::Vector3d refract_rgb(0, 0, 0);
       Ray refract_ray;
-      refract_ray.origin = q.origin + 0.0001*n;
-      refract_ray.direction = refract(q.origin, n, 1.0, 1.5);
+      Eigen::Vector3d phit = ray.origin + t*ray.direction;
+      refract_ray.origin = phit + 0.0001*n;
+      refract_ray.direction = refract(phit, n, 1.0f, 1.5f);
       if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001
         && raycolor(refract_ray, 0.00001, objects, lights, num_recursive_calls + 1, refract_rgb)) {
           rgb = refract_rgb;
