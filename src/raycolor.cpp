@@ -42,7 +42,7 @@ bool raycolor(
         if (outside) {
           rfrct.origin = hit_point - 0.00001*n;
         } else {
-          rfrct.origin = hit_point + 000001*n;
+          rfrct.origin = hit_point + 0.00001*n;
         }
         rfrct.direction = refract(ray.direction, n, 1, 1.5);
         raycolor(rfrct, 0.00001, objects, lights, num_recursive_calls + 1, refract_color);
