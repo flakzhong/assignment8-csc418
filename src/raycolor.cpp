@@ -20,29 +20,35 @@ bool raycolor(
   double t;
   Eigen::Vector3d n;
   if (first_hit(ray, min_t, objects, hit_id, t, n)) {
-    float transparency = objects[hit_id]->material->transparency;
-    if (transparency) {
-      Eigen::Vector3d refract_rgb(0, 0, 0);
-      Ray refract_ray;
-      Eigen::Vector3d phit = ray.origin + t*ray.direction;
-      refract_ray.origin = phit + 0.0001*n;
-      refract_ray.direction = refract(phit, n, 1.0f, 1.5f);
-      if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001
-        && raycolor(refract_ray, 0.00001, objects, lights, num_recursive_calls + 1, refract_rgb)) {
-          rgb = refract_rgb;
+    Eigen::Vector3d hit_point = ray.origin + t*ray.direction;
+    Ray rflt;
+    rflt.origin = hit_point;
+    rflt.direction = reflect(ray.direction, n);
+    Eigen::Vector3d r_color;
+    
+    rgb = objects[hit_id]->material->ka;
+    rgb += blinn_phong_shading(ray, hit_id, t, n, objects, lights);
+    if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001 
+      && raycolor(rflt, 0.00001, objects, lights, num_recursive_calls + 1, r_color)) {
+      rgb += (r_color.array()*objects[hit_id]->material->km.array()).matrix();
+    }
+
+    if (objects[hit_id]->material->transparency) {
+      Eigen::Vector3d refract_color(0,0,0);
+      float kr = fresnel(ray.direction, n, 1, 1.5);
+      if (kr < 1) {
+        bool outside = ray.direction.dot(n) < 0;
+        Ray rfrct;
+        if (outside) {
+          rfrct.origin = hit_point - 0.00001*n;
+        } else {
+          rfrct.origin = hit_point + 000001*n;
+        }
+        rfrct.direction = refract(ray.direction, n, 1, 1.5);
+        raycolor(rfrct, 0.00001, objects, lights, num_recursive_calls + 1, refract_color);
       }
-    } else {
-      Ray q;
-      q.origin = ray.origin + t*ray.direction;
-      q.direction = reflect(ray.direction, n);
-      Eigen::Vector3d r_color;
-      
-      rgb = objects[hit_id]->material->ka;
-      rgb += blinn_phong_shading(ray, hit_id, t, n, objects, lights);
-      if (pow(objects[hit_id]->material->km(0), num_recursive_calls) > 0.00001 
-        && raycolor(q, 0.00001, objects, lights, num_recursive_calls + 1, r_color)) {
-        rgb += (r_color.array()*objects[hit_id]->material->km.array()).matrix();
-      }
+
+      rgb = rgb*kr +  refract_color*(1 - kr);
     }
     return true;
   }
