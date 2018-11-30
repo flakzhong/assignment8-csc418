@@ -171,9 +171,21 @@ inline bool read_json(
               V,F,N);
         }
 
-        Eigen::Vector3d translation(V[0][0], V[0][1], V[0][2]);
+        // calculate center of mass
+        // for translation
+        double totalVolume = 0, currentVolume;
+        double xCenter = 0, yCenter = 0, zCenter = 0;
+        for(int f = 0;f<F.size();f++)
+        {
+          totalVolume += currentVolume = (V[F[f][0]][0]*V[F[f][1]][1]*V[F[f][2]][2] - V[F[f][0]][0]*V[F[f][1]][2]*V[F[f][2]][1] - V[F[f][0]][1]*V[F[f][1]][0]*V[F[f][2]][2] + V[F[f][0]][1]*V[F[f][1]][2]*V[F[f][2]][0] + V[F[f][0]][2]*V[F[f][1]][0]*V[F[f][2]][1] - V[F[f][0]][2]*V[F[f][1]][1]*V[F[f][2]][0]) / 6;
+          xCenter += ((V[F[f][0]][0] + V[F[f][0]][1] + V[F[f][0]][2]) / 4) * currentVolume;
+          yCenter += ((V[F[f][1]][0] + V[F[f][1]][1] + V[F[f][1]][2]) / 4) * currentVolume;
+          zCenter += ((V[F[f][2]][0] + V[F[f][2]][1] + V[F[f][2]][2]) / 4) * currentVolume;
+        }
+
+        Eigen::Vector3d translation;
         try {
-          translation = parse_Vector3d(jobj["point"]) - translation;
+          translation = parse_Vector3d(jobj["point"]) - Eigen::Vector3d(xCenter, yCenter, zCenter);
         } catch (const std::exception& e) {
           translation[0] = 0;
           translation[1] = 0;
