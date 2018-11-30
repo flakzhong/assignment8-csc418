@@ -2,7 +2,7 @@
   "camera": {
     "type": "perspective",
     "focal_length": 0.35,
-    "eye": [0,-4,0],
+    "eye": [0,-4,1],
     "up": [0,0,0.1],
     "look": [0,1,-0.4],
     "height": 1,
@@ -21,13 +21,13 @@
       "phong_exponent": 20
     },
     {
-      "name": "black mirror",
+      "name": "glass",
       "ka": [0.02,0.02,0.02],
       "kd": [0.1,0.1,0.1],
       "ks": [0.5,0.5,0.5],
       "km": [0.5,0.5,0.5],
       "transparency": 1,
-      "phong_exponent": 200
+      "phong_exponent": 2000
     },
     {
       "name": "red metal",
@@ -64,12 +64,26 @@
       "km": [0.596078,0.305882,0.639216],
       "transparency": 0,
       "phong_exponent": 2000
+    },
+    {
+      "name": "sunglasses",
+      "ka": [0.0,0.0,0.0],
+      "kd": [0.0,0.0,0.0],
+      "ks": [1,1,1],
+      "km": [0.596078,0.305882,0.639216],
+      "transparency": 0,
+      "phong_exponent": 2000
     }
   ],
   "lights":[
     {
       "type": "point",
       "position": [0,-5,4],
+      "color": [1,1,1]
+    },
+    {
+      "type": "point",
+      "position": [0,3,4],
       "color": [1,1,1]
     }
   ],
@@ -83,27 +97,22 @@
     },
     {
       "type": "sphere",
-      "material": "black mirror",
-      "radius": 1,
-      "center": [0,-1,0]
-    },
-    {
-      "type": "sphere",
-      "material": "blue metal",
-      "radius": 1,
-      "center": [0,5,0]
-    },
-    {
-      "type": "sphere",
-      "material": "red metal",
-      "radius": 1,
-      "center": [2,2,0]
+      "material": "sunglasses",
+      "radius": 2,
+      "center": [0,6,0]
     },
     {
       "type": "sphere",
       "material": "purple metal",
       "radius": 1,
-      "center": [-2,2,0]
+      "center": [-3,0,0]
+    }
+    ,
+    {
+      "type": "sphere",
+      "material": "blue metal",
+      "radius": 1,
+      "center": [3,0,0]
     }
   ]
 }
