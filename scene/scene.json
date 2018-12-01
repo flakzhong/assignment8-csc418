@@ -2,7 +2,7 @@
   "camera": {
     "type": "perspective",
     "focal_length": 0.35,
-    "eye": [0,-4,1],
+    "eye": [0,-4,0],
     "up": [0,0,0.1],
     "look": [0,1,-0.4],
     "height": 1,
@@ -21,13 +21,13 @@
       "phong_exponent": 20
     },
     {
-      "name": "black mirror",
+      "name": "glass",
       "ka": [0.02,0.02,0.02],
       "kd": [0.1,0.1,0.1],
       "ks": [0.5,0.5,0.5],
       "km": [0.5,0.5,0.5],
       "transparency": 1,
-      "phong_exponent": 200
+      "phong_exponent": 2000
     },
     {
       "name": "red metal",
@@ -64,12 +64,47 @@
       "km": [0.596078,0.305882,0.639216],
       "transparency": 0,
       "phong_exponent": 2000
+    },
+    {
+      "name": "sunglasses",
+      "ka": [0.0,0.0,0.0],
+      "kd": [0.0,0.0,0.0],
+      "ks": [1,1,1],
+      "km": [1,1,1],
+      "transparency": 0,
+      "phong_exponent": 2000
+    },
+    {
+      "name": "procedural gray",
+      "ka": [0.02, 0.02, 0.02],
+      "kd": [0.8, 0.8, 0.8],
+      "ks": [0.1,0.1,0.1],
+      "km": [0.1,0.1,0.1],
+      "transparency": 0,
+      "phong_exponent": 200,
+      "rng" : 1,
+      "freq" : [100,100,100]
+    },
+    {
+      "name": "procedural purple",
+      "ka": [0.0596078,0.0305882,0.0639216],
+      "kd": [0.596078,0.305882,0.639216],
+      "ks": [0.596078,0.305882,0.639216],
+      "km": [0.596078,0.305882,0.639216],
+      "transparency": 0,
+      "phong_exponent": 2000,
+      "freq" : [1,8,1]
     }
   ],
   "lights":[
     {
       "type": "point",
-      "position": [0,-5,4],
+      "position": [0,-2,4],
+      "color": [1,1,1]
+    },
+    {
+      "type": "directional",
+      "direction": [-6,0,1],
       "color": [1,1,1]
     }
   ],
@@ -77,45 +112,16 @@
   "objects": [
     {
       "type": "plane",
-      "material": "green metal",
+      "material": "procedural gray",
       "point": [0,0,-3],
       "normal": [0,0,1]
     },
     {
       "type": "sphere",
-      "material": "black mirror",
-      "radius": 1,
-      "center": [0,-1,0]
-    },
-    {
-      "type": "sphere",
-      "material": "blue metal",
-      "radius": 1,
-      "center": [0,2,0]
-    },
-    {
-      "type": "sphere",
-      "material": "blue metal",
-      "radius": 1,
-      "center": [1,2,0]
-    },
-    {
-      "type": "sphere",
-      "material": "blue metal",
-      "radius": 1,
-      "center": [-1,2,0]
-    },
-    {
-      "type": "sphere",
-      "material": "blue metal",
-      "radius": 1,
-      "center": [5,5,0]
-    },
-    {
-      "type": "sphere",
-      "material": "purple metal",
-      "radius": 1,
-      "center": [15,15,0]
+      "material": "sunglasses",
+      "radius": 3,
+      "center": [0,6,0]
     }
+    
   ]
 }

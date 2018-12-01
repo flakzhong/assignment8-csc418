@@ -1,8 +1,10 @@
 #include "blinn_phong_shading.h"
+#include "perlin_noise.h"
 // Hint:
 #include "first_hit.h"
 #include <iostream>
 #include <algorithm>
+#include <random>
 
 Eigen::Vector3d blinn_phong_shading(
   const Ray & ray,
@@ -16,6 +18,24 @@ Eigen::Vector3d blinn_phong_shading(
   // Replace with your code here:
   Eigen::Vector3d rgb(0.0, 0.0 ,0.0);
   Eigen::Vector3d kd = objects[hit_id]->material->kd;
+  Eigen::Vector3d seed = objects[hit_id]->material->procedural_freq;
+  if (seed[0] != -1 && seed[1] != -1 && seed[2] != -1) {
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 eng(rd()); // seed the generator
+    std::uniform_real_distribution<> distr(1, 1.1); // define the range
+    int rng = objects[hit_id]->material->rng;
+    for (int i = 0; i < 3; i++) {
+      seed[i] *= n[i];
+      if (rng) {
+        float mult = distr(eng);
+        seed[i] *= mult;
+      }
+    }
+    float noise = 0.8*(perlin_noise(seed) + 1);
+    for (int i = 0; i < 3; i++) {
+      kd[i] *= abs(sin(noise*M_PI));
+    }
+  }
   Eigen::Vector3d ks = objects[hit_id]->material->ks;
   Eigen::Vector3d q = ray.origin + ray.direction*t;
   double p = objects[hit_id]->material->phong_exponent;

@@ -96,6 +96,16 @@ inline bool read_json(
       material->km = parse_Vector3d(jmat["km"]);
       material->phong_exponent = jmat["phong_exponent"];
       material->transparency = (float)jmat["transparency"].get<double>();
+      try {
+        material->procedural_freq = parse_Vector3d(jmat["freq"]);
+      } catch (const std::exception& e) {
+        material->procedural_freq = Eigen::Vector3d(-1,-1,-1);
+      }
+      try {
+        material->rng = jmat["rng"].get<int>();
+      } catch (const std::exception& e) {
+        material->rng = 0;
+      }
       materials[name] = material;
     }
   };

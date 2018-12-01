@@ -10,5 +10,7 @@ struct Material
   // Phong exponent
   double phong_exponent;
   float transparency;
+  Eigen::Vector3d procedural_freq;
+  int rng;
 };
 #endif
