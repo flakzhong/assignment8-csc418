@@ -21,8 +21,8 @@ volatile int available_threads = num_threads;
 int buffer[num_threads];
 volatile int buffer_head = 0;
 volatile int buffer_tail = 0;
-volatile int buffer_n = 0;
-pthread_mutex_t running_mutex = PTHREAD_MUTEX_INITIALIZER;
+volatile int buffer_length = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *ray_tracer(void *thread_args) {
   int height, width;
@@ -80,12 +80,12 @@ void *ray_tracer(void *thread_args) {
     (*rgb_image)[1+3*(j+width*i)] = 255.0*clamp(rgb(1));
     (*rgb_image)[2+3*(j+width*i)] = 255.0*clamp(rgb(2));
   }
-  pthread_mutex_lock(&running_mutex);
+  pthread_mutex_lock(&mutex);
   available_threads++;
   buffer[buffer_tail] = i;
   buffer_tail = (buffer_tail + 1)%num_threads;
-  buffer_n++;
-  pthread_mutex_unlock(&running_mutex);
+  buffer_length++;
+  pthread_mutex_unlock(&mutex);
 }
 
 int main(int argc, char * argv[])
@@ -100,8 +100,8 @@ int main(int argc, char * argv[])
     objects,
     lights);
 
-  int width =  2560;
-  int height = 1440;
+  int width =  640;
+  int height = 360;
   pthread_t threads[height];
   std::vector<unsigned char> rgb_image(3*width*height);
 
@@ -120,9 +120,9 @@ int main(int argc, char * argv[])
   for (int i = 0; i < height; i++) {
     args[i].id = i;
     args[i].shared_params = &shared_params;
-    pthread_mutex_lock(&running_mutex);
+    pthread_mutex_lock(&mutex);
     available_threads--;
-    pthread_mutex_unlock(&running_mutex);
+    pthread_mutex_unlock(&mutex);
     
     pthread_create(&threads[i], NULL, ray_tracer, &args[i]);
 
@@ -130,19 +130,22 @@ int main(int argc, char * argv[])
       while (available_threads == 0){;}
     }
   
-    pthread_mutex_lock(&running_mutex);
-    while (buffer_n != 0) {
+    while (buffer_length != 0) {
       pthread_join(threads[buffer[buffer_head]], NULL);
+      pthread_mutex_lock(&mutex);
       buffer_head = (buffer_head + 1)%num_threads;
-      buffer_n--;
+      buffer_length--;
+      pthread_mutex_unlock(&mutex);
     }
-    pthread_mutex_unlock(&running_mutex);
   }
-
-  while (buffer_n !=0) {
+  
+  while (available_threads != num_threads) {
+    while(buffer_length == 0) {;}
     pthread_join(threads[buffer[buffer_head]], NULL);
+    pthread_mutex_lock(&mutex);
     buffer_head = (buffer_head + 1)%num_threads;
-    buffer_n--;
+    buffer_length--;
+    pthread_mutex_unlock(&mutex);
   }
 
   write_ppm("rgb.ppm",rgb_image,width,height,3);
