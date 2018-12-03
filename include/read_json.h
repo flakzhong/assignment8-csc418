@@ -170,13 +170,8 @@ inline bool read_json(
       }else if(jobj["type"] == "soup")
       {
 
-        // Eigen::MatrixXi F, FTC, FN;
-        // Eigen::MatrixXd V, TC, N;
-        std::vector<std::vector<double> > V;
-        std::vector<std::vector<int> > F;
-        std::vector<std::vector<double> > N;
-        std::vector<std::vector<double> > TC, C;
-        std::vector<std::vector<int> > FTC, FN;
+        Eigen::MatrixXi F, FTC, FN;
+        Eigen::MatrixXd V, TC, N;
         {
 #if defined(WIN32) || defined(_WIN32)
 #define PATH_SEPARATOR std::string("\\")
@@ -194,12 +189,12 @@ inline bool read_json(
         // for translation
         double totalVolume = 0, currentVolume;
         double xCenter = 0, yCenter = 0, zCenter = 0;
-        for(int f = 0;f<F.size();f++)
+        for(int f = 0;f<F.rows();f++)
         {
-          totalVolume += currentVolume = (V[F[f][0]][0]*V[F[f][1]][1]*V[F[f][2]][2] - V[F[f][0]][0]*V[F[f][1]][2]*V[F[f][2]][1] - V[F[f][0]][1]*V[F[f][1]][0]*V[F[f][2]][2] + V[F[f][0]][1]*V[F[f][1]][2]*V[F[f][2]][0] + V[F[f][0]][2]*V[F[f][1]][0]*V[F[f][2]][1] - V[F[f][0]][2]*V[F[f][1]][1]*V[F[f][2]][0]) / 6;
-          xCenter += ((V[F[f][0]][0] + V[F[f][0]][1] + V[F[f][0]][2]) / 4) * currentVolume;
-          yCenter += ((V[F[f][1]][0] + V[F[f][1]][1] + V[F[f][1]][2]) / 4) * currentVolume;
-          zCenter += ((V[F[f][2]][0] + V[F[f][2]][1] + V[F[f][2]][2]) / 4) * currentVolume;
+          totalVolume += currentVolume = (V(F(f,0),0)*V(F(f,1),1)*V(F(f,2),2) - V(F(f,0),0)*V(F(f,1),2)*V(F(f,2),1) - V(F(f,0),1)*V(F(f,1),0)*V(F(f,2),2) + V(F(f,0),1)*V(F(f,1),2)*V(F(f,2),0) + V(F(f,0),2)*V(F(f,1),0)*V(F(f,2),1) - V(F(f,0),2)*V(F(f,1),1)*V(F(f,2),0)) / 6;
+          xCenter += ((V(F(f,0),0) + V(F(f,0),1) + V(F(f,0),2)) / 4) * currentVolume;
+          yCenter += ((V(F(f,1),0) + V(F(f,1),1) + V(F(f,1),2)) / 4) * currentVolume;
+          zCenter += ((V(F(f,2),0) + V(F(f,2),1) + V(F(f,2),2)) / 4) * currentVolume;
         }
 
         Eigen::Vector3d translation;
@@ -210,25 +205,17 @@ inline bool read_json(
           translation[1] = 0;
           translation[2] = 0;
         }
-        Eigen::MatrixXd V_n = Eigen::MatrixXd::Zero(V.size(),3);
-        Eigen::MatrixXi F_n = Eigen::MatrixXi::Zero(F.size(),3);
         Eigen::MatrixXd CN;
-        for (int z = 0; z < V.size(); z++) {
-          V_n.row(z) = Eigen::RowVector3d(V[z][0], V[z][1], V[z][2]);
-        } 
-        for (int z = 0; z < F.size(); z++) {
-          F_n.row(z) = Eigen::RowVector3i(F[z][0], F[z][1], F[z][2]);
-        }
-        per_corner_normals(V_n, F_n, 20, CN);
+        per_corner_normals(V, F, 20, CN);
         
         std::shared_ptr<TriangleSoup> soup(new TriangleSoup());
-        for(int f = 0;f<F.size();f++)
+        for(int f = 0;f<F.rows();f++)
         {
           std::shared_ptr<Triangle> tri(new Triangle());
           tri->corners = std::make_tuple(
-            Eigen::Vector3d( V_n(F_n(f,0),0) + translation[0], V_n(F_n(f,0),1) + translation[1], V_n(F_n(f,0),2) + translation[2]),
-            Eigen::Vector3d( V_n(F_n(f,1),0) + translation[0], V_n(F_n(f,1),1) + translation[1], V_n(F_n(f,1),2) + translation[2]),
-            Eigen::Vector3d( V_n(F_n(f,2),0) + translation[0], V_n(F_n(f,2),1) + translation[1], V_n(F_n(f,2),2) + translation[2])
+            Eigen::Vector3d( V(F(f,0),0) + translation[0], V(F(f,0),1) + translation[1], V(F(f,0),2) + translation[2]),
+            Eigen::Vector3d( V(F(f,1),0) + translation[0], V(F(f,1),1) + translation[1], V(F(f,1),2) + translation[2]),
+            Eigen::Vector3d( V(F(f,2),0) + translation[0], V(F(f,2),1) + translation[1], V(F(f,2),2) + translation[2])
           );
           Eigen::RowVector3d n_of_c0 = CN.row(f*3);
           Eigen::RowVector3d n_of_c1 = CN.row(f*3 + 1);
