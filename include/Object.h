@@ -2,6 +2,7 @@
 #define OBJECT_H
 
 #include "Material.h"
+#include "BoundingBox.h"
 #include <Eigen/Core>
 #include <memory>
 
@@ -10,6 +11,7 @@ class Object
 {
   public:
     std::shared_ptr<Material> material;
+    BoundingBox box;
     // https://stackoverflow.com/questions/461203/when-to-use-virtual-destructors
     virtual ~Object() {}
     // Intersect object with ray.

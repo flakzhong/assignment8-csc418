@@ -32,7 +32,9 @@ inline bool read_json(
 #include "Sphere.h"
 #include "Plane.h"
 #include "Triangle.h"
-#include "TriangleSoup.h"
+#include "AABBTree.h"
+#include "BoundingBox.h"
+#include "insert_triangle_into_box.h"
 #include "Light.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
@@ -208,7 +210,8 @@ inline bool read_json(
         Eigen::MatrixXd CN;
         per_corner_normals(V, F, 20, CN);
         
-        std::shared_ptr<TriangleSoup> soup(new TriangleSoup());
+
+        std::vector<std::shared_ptr<Object> > triangles;
         for(int f = 0;f<F.rows();f++)
         {
           std::shared_ptr<Triangle> tri(new Triangle());
@@ -225,9 +228,17 @@ inline bool read_json(
             Eigen::Vector3d(n_of_c1[0], n_of_c1[1], n_of_c1[2]),
             Eigen::Vector3d(n_of_c2[0], n_of_c2[1], n_of_c2[2])
           );
-          soup->triangles.push_back(tri);
+          BoundingBox temp_box;
+          insert_triangle_into_box(
+            Eigen::RowVector3d( V(F(f,0),0) + translation[0], V(F(f,0),1) + translation[1], V(F(f,0),2) + translation[2]),
+            Eigen::RowVector3d( V(F(f,1),0) + translation[0], V(F(f,1),1) + translation[1], V(F(f,1),2) + translation[2]),
+            Eigen::RowVector3d( V(F(f,2),0) + translation[0], V(F(f,2),1) + translation[1], V(F(f,2),2) + translation[2]),
+            temp_box);
+          tri->box = temp_box;
+          triangles.push_back(tri);
         }
-        objects.push_back(soup);
+        std::shared_ptr<AABBTree> aabb(new AABBTree(triangles));
+        objects.push_back(aabb);
       }
       //objects.back()->material = default_material;
       if(jobj.count("material"))
