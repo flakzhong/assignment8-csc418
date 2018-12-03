@@ -92,7 +92,7 @@
       "transparency": 0,
       "phong_exponent": 200,
       "rng" : 1,
-      "freq" : [1,50,1]
+      "freq" : [0,0,10]
     },
     {
       "name": "procedural purple",
@@ -164,6 +164,13 @@
       "material": "Lambertian gray",
       "obj": "white_1.obj",
       "point": [0.3, -2.6, 2.4]
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "terrain.obj",
+      "point": [80, 150, 3.8],
+      "stupid" : 1
     }
   ]
 }

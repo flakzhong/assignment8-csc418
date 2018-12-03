@@ -187,26 +187,38 @@ inline bool read_json(
               stl_path,
               V,TC,N,F,FTC,FN);
         }
-        // calculate center of mass
-        // for translation
-        double totalVolume = 0, currentVolume;
-        double xCenter = 0, yCenter = 0, zCenter = 0;
-        for(int f = 0;f<F.rows();f++)
-        {
-          totalVolume += currentVolume = (V(F(f,0),0)*V(F(f,1),1)*V(F(f,2),2) - V(F(f,0),0)*V(F(f,1),2)*V(F(f,2),1) - V(F(f,0),1)*V(F(f,1),0)*V(F(f,2),2) + V(F(f,0),1)*V(F(f,1),2)*V(F(f,2),0) + V(F(f,0),2)*V(F(f,1),0)*V(F(f,2),1) - V(F(f,0),2)*V(F(f,1),1)*V(F(f,2),0)) / 6;
-          xCenter += ((V(F(f,0),0) + V(F(f,0),1) + V(F(f,0),2)) / 4) * currentVolume;
-          yCenter += ((V(F(f,1),0) + V(F(f,1),1) + V(F(f,1),2)) / 4) * currentVolume;
-          zCenter += ((V(F(f,2),0) + V(F(f,2),1) + V(F(f,2),2)) / 4) * currentVolume;
-        }
 
         Eigen::Vector3d translation;
+        int stupid = 0;
         try {
-          translation = parse_Vector3d(jobj["point"]) - Eigen::Vector3d(xCenter, yCenter, zCenter);
+          stupid = jobj["stupid"].get<int>();
         } catch (const std::exception& e) {
-          translation[0] = 0;
-          translation[1] = 0;
-          translation[2] = 0;
+          stupid = 0;
         }
+        
+        if (stupid) {
+          translation = parse_Vector3d(jobj["point"]) - Eigen::Vector3d(V(F(0,0),0), V(F(0,0),1), V(F(0,0),2));
+        } else {
+          // calculate center of mass
+          // for translation
+          double totalVolume = 0, currentVolume;
+          double xCenter = 0, yCenter = 0, zCenter = 0;
+          for(int f = 0;f<F.rows();f++)
+          {
+            totalVolume += currentVolume = (V(F(f,0),0)*V(F(f,1),1)*V(F(f,2),2) - V(F(f,0),0)*V(F(f,1),2)*V(F(f,2),1) - V(F(f,0),1)*V(F(f,1),0)*V(F(f,2),2) + V(F(f,0),1)*V(F(f,1),2)*V(F(f,2),0) + V(F(f,0),2)*V(F(f,1),0)*V(F(f,2),1) - V(F(f,0),2)*V(F(f,1),1)*V(F(f,2),0)) / 6;
+            xCenter += ((V(F(f,0),0) + V(F(f,0),1) + V(F(f,0),2)) / 4) * currentVolume;
+            yCenter += ((V(F(f,1),0) + V(F(f,1),1) + V(F(f,1),2)) / 4) * currentVolume;
+            zCenter += ((V(F(f,2),0) + V(F(f,2),1) + V(F(f,2),2)) / 4) * currentVolume;
+          }
+          try {
+            translation = parse_Vector3d(jobj["point"]) - Eigen::Vector3d(xCenter, yCenter, zCenter);
+          } catch (const std::exception& e) {
+            translation[0] = 0;
+            translation[1] = 0;
+            translation[2] = 0;
+          }
+        }
+
         Eigen::MatrixXd CN;
         per_corner_normals(V, F, 20, CN);
         

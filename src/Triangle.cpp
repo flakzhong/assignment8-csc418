@@ -26,7 +26,7 @@ bool Triangle::intersect(
   double a2 = (intersection - b).cross(intersection - c).norm();
   double a3 = (intersection - a).cross(intersection - c).norm();
   double area = (a - b).cross(a - c).norm();
-  if (area + std::numeric_limits<double>::epsilon() < a1 + a2 + a3) {
+  if (area*(1 + 0.00001) < a1 + a2 + a3) {
     return false;
   } else {
     double u, v, w;
