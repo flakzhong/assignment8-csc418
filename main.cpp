@@ -14,7 +14,6 @@
 #include <limits>
 #include <functional>
 #include <pthread.h>
-#include <thread>
 
 
 const int num_threads = 40;
@@ -101,8 +100,8 @@ int main(int argc, char * argv[])
     objects,
     lights);
 
-  int width =  640;
-  int height = 360;
+  int width =  2560;
+  int height = 1440;
   pthread_t threads[height];
   std::vector<unsigned char> rgb_image(3*width*height);
 

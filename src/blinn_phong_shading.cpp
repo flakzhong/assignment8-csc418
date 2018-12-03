@@ -31,7 +31,7 @@ Eigen::Vector3d blinn_phong_shading(
         seed[i] *= mult;
       }
     }
-    float noise = 0.8*(perlin_noise(seed) + 1);
+    float noise = 0.8*(perlin_noise(seed) + 3);
     for (int i = 0; i < 3; i++) {
       kd[i] *= abs(sin(noise*M_PI));
     }
