@@ -152,6 +152,18 @@
       "material": "gold foil",
       "obj": "golden_1.obj",
       "point": [-3,-3,-1.53]
+    },
+    {
+      "type": "soup",
+      "material": "Lambertian gray",
+      "obj": "black_1.obj",
+      "point": [-3.04, -3.02, -1.21]
+    },
+    {
+      "type": "soup",
+      "material": "Lambertian gray",
+      "obj": "white_1.obj",
+      "point": [-3, -2.96, -1.13]
     }
   ]
 }
