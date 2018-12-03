@@ -26,7 +26,7 @@ inline bool read_json(
 // Implementation
 
 #include <json.hpp>
-#include "readSTL.h"
+#include "readOBJ.h"
 #include "dirname.h"
 #include "Object.h"
 #include "Sphere.h"
@@ -37,6 +37,7 @@ inline bool read_json(
 #include "PointLight.h"
 #include "DirectionalLight.h"
 #include "Material.h"
+#include "per_corner_normals.h"
 #include <Eigen/Geometry>
 #include <fstream>
 #include <iostream>
@@ -95,7 +96,11 @@ inline bool read_json(
       material->ks = parse_Vector3d(jmat["ks"]);
       material->km = parse_Vector3d(jmat["km"]);
       material->phong_exponent = jmat["phong_exponent"];
-      material->transparency = (float)jmat["transparency"].get<double>();
+      try {
+        material->transparency = (float)jmat["transparency"].get<double>();
+      } catch (const std::exception& e) {
+        material->transparency = 0;
+      }
       try {
         material->procedural_freq = parse_Vector3d(jmat["freq"]);
       } catch (const std::exception& e) {
@@ -164,23 +169,27 @@ inline bool read_json(
         objects.push_back(tri);
       }else if(jobj["type"] == "soup")
       {
+
+        // Eigen::MatrixXi F, FTC, FN;
+        // Eigen::MatrixXd V, TC, N;
         std::vector<std::vector<double> > V;
-        std::vector<std::vector<double> > F;
-        std::vector<std::vector<int> > N;
+        std::vector<std::vector<int> > F;
+        std::vector<std::vector<double> > N;
+        std::vector<std::vector<double> > TC, C;
+        std::vector<std::vector<int> > FTC, FN;
         {
 #if defined(WIN32) || defined(_WIN32)
 #define PATH_SEPARATOR std::string("\\")
 #else
 #define PATH_SEPARATOR std::string("/")
 #endif
-          const std::string stl_path = jobj["stl"];
-          igl::readSTL(
+          const std::string stl_path = jobj["obj"];
+          igl::readOBJ(
               igl::dirname(filename)+
               PATH_SEPARATOR +
               stl_path,
-              V,F,N);
+              V,TC,N,F,FTC,FN);
         }
-
         // calculate center of mass
         // for translation
         double totalVolume = 0, currentVolume;
@@ -201,15 +210,33 @@ inline bool read_json(
           translation[1] = 0;
           translation[2] = 0;
         }
+        Eigen::MatrixXd V_n = Eigen::MatrixXd::Zero(V.size(),3);
+        Eigen::MatrixXi F_n = Eigen::MatrixXi::Zero(F.size(),3);
+        Eigen::MatrixXd CN;
+        for (int z = 0; z < V.size(); z++) {
+          V_n.row(z) = Eigen::RowVector3d(V[z][0], V[z][1], V[z][2]);
+        } 
+        for (int z = 0; z < F.size(); z++) {
+          F_n.row(z) = Eigen::RowVector3i(F[z][0], F[z][1], F[z][2]);
+        }
+        per_corner_normals(V_n, F_n, 20, CN);
         
         std::shared_ptr<TriangleSoup> soup(new TriangleSoup());
         for(int f = 0;f<F.size();f++)
         {
           std::shared_ptr<Triangle> tri(new Triangle());
           tri->corners = std::make_tuple(
-            Eigen::Vector3d( V[F[f][0]][0] + translation[0], V[F[f][0]][1] + translation[1], V[F[f][0]][2] + translation[2]),
-            Eigen::Vector3d( V[F[f][1]][0] + translation[0], V[F[f][1]][1] + translation[1], V[F[f][1]][2] + translation[2]),
-            Eigen::Vector3d( V[F[f][2]][0] + translation[0], V[F[f][2]][1] + translation[1], V[F[f][2]][2] + translation[2])
+            Eigen::Vector3d( V_n(F_n(f,0),0) + translation[0], V_n(F_n(f,0),1) + translation[1], V_n(F_n(f,0),2) + translation[2]),
+            Eigen::Vector3d( V_n(F_n(f,1),0) + translation[0], V_n(F_n(f,1),1) + translation[1], V_n(F_n(f,1),2) + translation[2]),
+            Eigen::Vector3d( V_n(F_n(f,2),0) + translation[0], V_n(F_n(f,2),1) + translation[1], V_n(F_n(f,2),2) + translation[2])
+          );
+          Eigen::RowVector3d n_of_c0 = CN.row(f*3);
+          Eigen::RowVector3d n_of_c1 = CN.row(f*3 + 1);
+          Eigen::RowVector3d n_of_c2 = CN.row(f*3 + 2);
+          tri->normals = std::make_tuple(
+            Eigen::Vector3d(n_of_c0[0], n_of_c0[1], n_of_c0[2]),
+            Eigen::Vector3d(n_of_c1[0], n_of_c1[1], n_of_c1[2]),
+            Eigen::Vector3d(n_of_c2[0], n_of_c2[1], n_of_c2[2])
           );
           soup->triangles.push_back(tri);
         }

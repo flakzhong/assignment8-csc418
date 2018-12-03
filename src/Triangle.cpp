@@ -13,7 +13,7 @@ bool Triangle::intersect(
   Eigen::Vector3d a = std::get<0>(corners);
   Eigen::Vector3d b = std::get<1>(corners);
   Eigen::Vector3d c = std::get<2>(corners);
-  Eigen::Vector3d normal = (a - b).cross(a - c);
+  Eigen::Vector3d normal = (a - b).cross(a - c).normalized();
   Eigen::Vector3d point = c;
 
   double temp_t = ((point - e).dot(normal))/d.dot(normal);
@@ -25,11 +25,16 @@ bool Triangle::intersect(
   double a1 = (intersection - a).cross(intersection - b).norm();
   double a2 = (intersection - b).cross(intersection - c).norm();
   double a3 = (intersection - a).cross(intersection - c).norm();
-  if ((a - b).cross(a - c).norm() + std::numeric_limits<double>::epsilon() < a1 + a2 + a3) {
+  double area = (a - b).cross(a - c).norm();
+  if (area + std::numeric_limits<double>::epsilon() < a1 + a2 + a3) {
     return false;
   } else {
+    double u, v, w;
+    u = a2/area;
+    v = a3/area;
+    w = a1/area;
+    n = u*std::get<0>(normals) + v*std::get<1>(normals) + w*std::get<2>(normals);    
     t = temp_t;
-    n = normal;
     return true;
   }
   ////////////////////////////////////////////////////////////////////////////

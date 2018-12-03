@@ -3,6 +3,7 @@
 
 #include "Ray.h"
 #include "Object.h"
+#include "Triangle.h"
 #include <Eigen/Core>
 #include <vector>
 #include <memory>

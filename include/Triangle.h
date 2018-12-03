@@ -9,6 +9,7 @@ class Triangle : public Object
   public:
     // A triangle has three corners
     std::tuple< Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d> corners;
+    std::tuple< Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d> normals;
     // Intersect a triangle with ray.
     //
     // Inputs:
