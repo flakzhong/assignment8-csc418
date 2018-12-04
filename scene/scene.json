@@ -132,7 +132,7 @@
     },
     {
       "type": "point",
-      "position": [3,-3,5],
+      "position": [0,-10,30],
       "color": [0.8,0.8,0.8]
     }
   ],
@@ -341,6 +341,90 @@
       "material": "terrain gray",
       "obj": "r3.obj",
       "point": [-5, 10, -1.6],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r0.obj",
+      "point": [-5.4, 13, -1.64],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r1.obj",
+      "point": [-4.0, 9, -1.66],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r2.obj",
+      "point": [-3.5, 11, -1.45],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r3.obj",
+      "point": [-4.5, 13, -1.6],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r4.obj",
+      "point": [-6, 16, -1.8],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r5.obj",
+      "point": [-7.0, 12, -1.43],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r6.obj",
+      "point": [-4.5, 11, -1.35],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r7.obj",
+      "point": [-8, 16, -1.8],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r0.obj",
+      "point": [-7.5, 15, -1.55],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r1.obj",
+      "point": [-6, 9, -1.75],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r2.obj",
+      "point": [-9, 16, -1.73],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "r3.obj",
+      "point": [-8, 13, -1.7],
       "stupid" : 1
     }
   ]
