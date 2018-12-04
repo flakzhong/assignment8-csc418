@@ -100,7 +100,7 @@
       "km": [0.0,0.0,0.0],
       "transparency": 0,
       "phong_exponent": 200,
-      "rng" : 1,
+      "rng" : 1
     },
     {
       "name": "procedural purple",
@@ -109,7 +109,7 @@
       "ks": [0.596078,0.305882,0.639216],
       "km": [0.596078,0.305882,0.639216],
       "transparency": 0,
-      "phong_exponent": 2000,
+      "phong_exponent": 2000
     },
     {
       "name": "gold foil",
@@ -118,7 +118,7 @@
       "ks": [0.4,0.25,0.08],
       "km": [0.4,0.25,0.08],
       "transparency": 0,
-      "phong_exponent": 2000,
+      "phong_exponent": 2000
     }
   ],
   "lights":[
