@@ -178,6 +178,90 @@
     {
       "type": "soup",
       "material": "terrain gray",
+      "obj": "rock0.obj",
+      "point": [-2.4, 13, -1.34],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock1.obj",
+      "point": [-1.0, 9, -1.26],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock2.obj",
+      "point": [-0.5, 11, -1.05],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock3.obj",
+      "point": [-1.5, 13, -1.2],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock4.obj",
+      "point": [-3, 16, -1.4],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock5.obj",
+      "point": [-4.0, 12, -1.43],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock6.obj",
+      "point": [-1.5, 11, -1.15],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock7.obj",
+      "point": [-5, 16, -1.6],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock0.obj",
+      "point": [-4.5, 15, -1.45],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock1.obj",
+      "point": [-3, 9, -1.55],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock2.obj",
+      "point": [-6, 16, -1.53],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
+      "obj": "rock3.obj",
+      "point": [-5, 13, -1.6],
+      "stupid" : 1
+    },
+    {
+      "type": "soup",
+      "material": "terrain gray",
       "obj": "r0.obj",
       "point": [-2.4, 10, -1.34],
       "stupid" : 1
