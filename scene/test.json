@@ -79,7 +79,16 @@
       "ka": [0.0,0.0,0.0],
       "kd": [0.0,0.0,0.0],
       "ks": [1,1,1],
-      "km": [1,0.96,0.96],
+      "km": [1,0.80,0.6],
+      "transparency": 0,
+      "phong_exponent": 2000
+    },
+    {
+      "name": "black parts",
+      "ka": [0.05,0.05,0.05],
+      "kd": [0.05,0.05,0.05],
+      "ks": [0.05,0.05,0.05],
+      "km": [0.05,0.05,0.05],
       "transparency": 0,
       "phong_exponent": 2000
     },
@@ -149,7 +158,7 @@
     },
     {
       "type": "soup",
-      "material": "Lambertian gray",
+      "material": "black parts",
       "obj": "black_1.obj",
       "point": [-2.24, -4.8, 0.1]
     },
