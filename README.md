@@ -2,7 +2,7 @@
 
 This project is based on the ray tracing assignment of CSC418.
 
-To reproduce the image that I submitted, you have to use g++ 7.3.0. (It has some weird bugs on g++ 5.4.0 so it doesn’t run on well cdf. The implementation of depth of field and perlin noise generated textures depends on  std::mt19937. It can’t be run well on g++ 5.4.0. You can still run some other scenes though).
+To reproduce the image that I submitted, you have to use g++ 7.3.0. (It has some weird bugs on g++ 5.4.0 so it doesn’t run on well cdf. The implementation of depth of field and perlin noise generated textures depends on  std::mt19937. It can’t be run well on g++ 5.4.0. You can still generate a image without procedural color).
 
 ##### Speed performance
 
