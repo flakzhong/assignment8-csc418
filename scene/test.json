@@ -101,7 +101,6 @@
       "transparency": 0,
       "phong_exponent": 200,
       "rng" : 1,
-      "freq" : [15,30,2]
     },
     {
       "name": "procedural purple",
@@ -111,7 +110,6 @@
       "km": [0.596078,0.305882,0.639216],
       "transparency": 0,
       "phong_exponent": 2000,
-      "freq" : [1,8,1]
     },
     {
       "name": "gold foil",
@@ -121,7 +119,6 @@
       "km": [0.4,0.25,0.08],
       "transparency": 0,
       "phong_exponent": 2000,
-      "freq" : [10,10,10]
     }
   ],
   "lights":[
@@ -148,7 +145,7 @@
       "type": "soup",
       "material": "sunglasses",
       "obj": "glass.obj",
-      "point": [0.216,-0.79,-1.51]
+      "point": [0.216,-0.79,-1.505]
     },
     {
       "type": "soup",
