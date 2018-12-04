@@ -25,7 +25,10 @@ Implemented refraction and depth of field 	(Monte Carlo sampling).
 ##### .obj files:
 
 Lunar landing module: https://nasa3d.arc.nasa.gov/detail/lunarlandernofoil-c
+
 Astronaut: https://www.thingiverse.com/thing:2382467
+
+rocks: rock:https://www.thingiverse.com/thing:3013912
 
 
 
