@@ -1,8 +1,4 @@
-#### Assignment 8 of CSC418 Computer Graphics
-
-Image submitted:
-
-![](rgb.png)
+#### Ray tracing project
 
 This project is based on the ray tracing assignment of CSC418.
 
@@ -23,7 +19,9 @@ Each triangle now contains its normal information (per corner normal). When a ra
 Implemented refraction and depth of field 	(Monte Carlo sampling).
 
 
+Sample image:
 
+![](rgb.png)
 #### Acknowledgement of assets on Internet
 
 ##### .obj files:
