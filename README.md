@@ -1,4 +1,4 @@
-#### Ray tracing project
+# Ray tracing project
 
 This project is based on the ray tracing assignment of CSC418.
 
